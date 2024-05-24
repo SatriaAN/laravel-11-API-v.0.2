@@ -52,4 +52,43 @@ class PenyimpananController extends Controller
         return new PenyimpananResource(true,'Data penyimpanan baru berhasil di tambahkan', $penyimpanan);
 
     }
+
+    public function show($id) {
+        $penyimpanan = Penyimpanan::find($id);
+        return new PenyimpananResource(true, 'Detail data penyimpanan!' ,$penyimpanan);
+    }
+
+    public function update(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'isian' => 'required',
+            'nama' => 'required',
+            'no_hp' => 'required',
+            'alamat' => 'required',
+            'moto_kerja' => 'required',
+        ], [
+            'isian.required'=> 'Isian tidak boleh kosong!',
+            'nama.required'=> 'Nama tidak boleh kosong!',
+            'no_hp.required'=> 'Nomor Hp tidak boleh kosong!',
+            'alamat.required'=> 'Alamat tidak boleh kosong!',
+            'moto_kerja.required'=> 'moto kerja tidak boleh kosong!',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors(),422);
+        }
+
+        $penyimpanan = Penyimpanan::find($id);
+
+        $penyimpanan->update([
+            'isian'=> $request->isian,
+            'nama'=> $request->nama,
+            'no_hp'=> $request->no_hp,
+            'alamat'=> $request->alamat,
+            'moto_kerja'=> $request->moto_kerja,
+        ]);
+
+        return new PenyimpananResource(true,'Data penyimpanan berhasil di perbaharui', $penyimpanan);
+
+    }
+
 }
