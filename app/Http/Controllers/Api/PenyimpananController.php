@@ -88,7 +88,14 @@ class PenyimpananController extends Controller
         ]);
 
         return new PenyimpananResource(true,'Data penyimpanan berhasil di perbaharui', $penyimpanan);
+    }
 
+    public function destroy($id) {
+
+        $penyimpanan = Penyimpanan::find($id);
+        $penyimpanan->delete();
+
+        return new PenyimpananResource(true,'Berhasil menghapus data penyimpanan!', $penyimpanan);
     }
 
 }
